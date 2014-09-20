@@ -1,57 +1,52 @@
 package week1;
 
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import static java.lang.Math.*;
 
-import com.google.common.base.Stopwatch;
+import stdlib.StdRandom;
+import stdlib.StdStats;
+import stdlib.Stopwatch;
 
+/**
+ * 
+ * @author Martin Charlesworth
+ *
+ */
 public class PercolationStats {
 
-	public PercolationStats(int N, int T) {   // perform T independent computational experiments on an N-by-N grid
+	private double[] results;
+	private int T;
+	
+	// perform T independent computational experiments on an N-by-N grid
+	public PercolationStats(int N, int T) {
 		if (N<=0 || T<=0) {
 			throw new IllegalArgumentException("Bad N or T");
 		}
-		double psum = 0.0, tsum = 0.0;
+		this.T = T;
+		results = new double[T];
 		for (int t=0; t<T; ++t) {
-			Stopwatch stopwatch = Stopwatch.createStarted();
-			double result = runSimulation(N);
-			long millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-			System.out.println("Percolates at "+result+", runtime = " + millis + " ms");
-			psum += result;
-			tsum += millis;
+			results[t] = runSimulation(N);
 		}
-		System.out.println("Avg p = " + (psum/T) + ", avg time = " + (tsum/T));
 	}
 
-	public double mean() {                     // sample mean of percolation threshold
-		return 0.0;
+	public double mean() {
+		return StdStats.mean(results);
 	}
 
-	public double stddev() {                   // sample standard deviation of percolation threshold
-		return 0.0;
+	public double stddev() {
+		return StdStats.stddev(results);
 	}
 
-	public double confidenceLo() {             // returns lower bound of the 95% confidence interval
-		return 0.0;
+	// returns lower bound of the 95% confidence interval
+	public double confidenceLo() {
+		return mean() - (1.96 * stddev() / sqrt(T));
 	}
 
-	public double confidenceHi() {             // returns upper bound of the 95% confidence interval
-		return 0.0;
+	// returns upper bound of the 95% confidence interval
+	public double confidenceHi() {             
+		return mean() + (1.96 * stddev() / sqrt(T));
 	}
 
-	public static void main(String[] args) {   // test client, described below
-		if (args.length != 2) {
-			System.err.println("Usage: PercolationStats N T");
-			return;
-		}
-		int N = Integer.parseInt(args[0]);
-		int T = Integer.parseInt(args[1]);
-		new PercolationStats(N, T);
-	}
-
-	private static Random rand = new Random();
-
-	private static double runSimulation(int N) {
+	private double runSimulation(int N) {
 		Percolation perc = new Percolation(N);
 		int openSites=0;
 
@@ -64,16 +59,37 @@ public class PercolationStats {
 		return (double)openSites/(N*N);
 	}
 
-	private static void openASite(Percolation perc) {
+	private void openASite(Percolation perc) {
 		boolean opened = false;
 		do {
-			int i = rand.nextInt(perc.N)+1;
-			int j = rand.nextInt(perc.N)+1;
+			int i = StdRandom.uniform(perc.N)+1;
+			int j = StdRandom.uniform(perc.N)+1;
 			if (!perc.isOpen(i, j)) {
 				perc.open(i,j);
 				opened = true;
 			}
 		} while (!opened);
+	}
+
+	/**
+	 * test client
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		if (args.length != 2) {
+			System.err.println("Usage: PercolationStats N T");
+			return;
+		}
+		int N = Integer.parseInt(args[0]);
+		int T = Integer.parseInt(args[1]);
+		System.out.println(String.format("For N = %d and T = %d...", N, T));
+		Stopwatch stopwatch = new Stopwatch();
+		PercolationStats perc = new PercolationStats(N, T);
+		double secs = stopwatch.elapsedTime();
+		System.out.println(String.format("%-30s = %f", "mean", perc.mean()));
+		System.out.println(String.format("%-30s = %f", "stddev", perc.stddev()));
+		System.out.println(String.format("%-30s = %f %f", "95% confidence interval", perc.confidenceLo(), perc.confidenceHi()));
+		System.out.println(String.format("%-30s = %f", "running time (seconds)", secs));
 	}
 
 }

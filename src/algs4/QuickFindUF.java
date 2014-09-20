@@ -1,5 +1,8 @@
 package algs4;
 
+import stdlib.StdIn;
+import stdlib.StdOut;
+
 /****************************************************************************
  *  Compilation:  javac QuickFindUF.java
  *  Execution:  java QuickFindUF < input.txt

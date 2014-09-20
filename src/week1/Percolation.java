@@ -1,6 +1,7 @@
 package week1;
 
 import algs4.QuickFindUF;
+import algs4.WeightedQuickUnionUF;
 
 /**
  * 
@@ -10,7 +11,7 @@ import algs4.QuickFindUF;
 public class Percolation {
 
 	private final boolean[] grid;
-	private QuickFindUF uf;
+	private WeightedQuickUnionUF uf;
 	final int N;
 	final int initial;
 	final int terminal;
@@ -21,7 +22,7 @@ public class Percolation {
 		}
 		this.N = N;
 		this.grid = new boolean[N*N];
-		uf = new QuickFindUF(N*N + 2);
+		uf = new WeightedQuickUnionUF(N*N + 2);
 		initial = N*N;
 		terminal = N*N+1;
 	}

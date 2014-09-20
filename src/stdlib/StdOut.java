@@ -1,4 +1,4 @@
-package algs4;
+package stdlib;
 
 /*************************************************************************
  *  Compilation:  javac StdOut.java
