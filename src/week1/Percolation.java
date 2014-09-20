@@ -1,6 +1,5 @@
 package week1;
 
-import algs4.QuickFindUF;
 import algs4.WeightedQuickUnionUF;
 
 /**
