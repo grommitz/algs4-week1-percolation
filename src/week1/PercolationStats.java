@@ -6,38 +6,39 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 
 public class PercolationStats {
-	
+
 	public PercolationStats(int N, int T) {   // perform T independent computational experiments on an N-by-N grid
 		if (N<=0 || T<=0) {
 			throw new IllegalArgumentException("Bad N or T");
 		}
-		double sum = 0.0;
+		double psum = 0.0, tsum = 0.0;
 		for (int t=0; t<T; ++t) {
 			Stopwatch stopwatch = Stopwatch.createStarted();
 			double result = runSimulation(N);
 			long millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
 			System.out.println("Percolates at "+result+", runtime = " + millis + " ms");
-			sum += result;
+			psum += result;
+			tsum += millis;
 		}
-		System.out.println("Avg p = "+(sum/T));
+		System.out.println("Avg p = " + (psum/T) + ", avg time = " + (tsum/T));
 	}
-	
+
 	public double mean() {                     // sample mean of percolation threshold
 		return 0.0;
 	}
-	
+
 	public double stddev() {                   // sample standard deviation of percolation threshold
 		return 0.0;
 	}
-	
+
 	public double confidenceLo() {             // returns lower bound of the 95% confidence interval
 		return 0.0;
 	}
-	
+
 	public double confidenceHi() {             // returns upper bound of the 95% confidence interval
 		return 0.0;
 	}
-	
+
 	public static void main(String[] args) {   // test client, described below
 		if (args.length != 2) {
 			System.err.println("Usage: PercolationStats N T");

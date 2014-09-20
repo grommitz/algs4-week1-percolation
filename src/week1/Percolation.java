@@ -8,20 +8,24 @@ import algs4.QuickFindUF;
  *
  */
 public class Percolation {
-	
+
 	private final boolean[] grid;
 	private QuickFindUF uf;
 	final int N;
+	final int initial;
+	final int terminal;
 
 	public Percolation(int N) {               // create N-by-N grid, with all sites blocked
-		this.N = N;
 		if (N <= 1) {
 			throw new IndexOutOfBoundsException("N must be > 1");
 		}
+		this.N = N;
 		this.grid = new boolean[N*N];
-        uf = new QuickFindUF(N*N);
+		uf = new QuickFindUF(N*N + 2);
+		initial = N*N;
+		terminal = N*N+1;
 	}
-	
+
 	public void open(int i, int j) {          // open site (row i, column j) if it is not already
 		rangeCheck(i,j);
 		int p = indexOf(i,j);
@@ -35,8 +39,13 @@ public class Percolation {
 				uf.union(p, q);
 			}
 		}
+		if (i==1) {
+			uf.union(p, initial);
+		} else if (i==N) {
+			uf.union(p, terminal);
+		}
 	}
-	
+
 	private int[] neighboursOf(int i, int j) {
 		int[] n = new int[4];
 		n[0] = inBounds(i, j-1) ? indexOf(i,j-1) : -1;
@@ -45,36 +54,24 @@ public class Percolation {
 		n[3] = inBounds(i-1, j) ? indexOf(i-1,j) : -1;
 		return n;
 	}
-	
+
 	private int indexOf(int i, int j) {
 		return (i-1) + (j-1)*N;
 	}
-	
+
 	public boolean isOpen(int i, int j) {      // is site (row i, column j) open?
 		rangeCheck(i,j);
 		return grid[indexOf(i,j)];
 	}
-	
+
 	public boolean isFull(int i, int j) {     // is site (row i, column j) full?
 		return !isOpen(i, j);
 	}
-	
+
 	public boolean percolates() {              // does the system percolate?
-		for (int j=1; j<=N; ++j) {
-			if (isOpen(1, j)) {
-				for (int j1=1; j1<=N; ++j1) {
-					if (isOpen(N, j1)) {
-						int p = indexOf(1, j);
-						int q = indexOf(N, j1);
-						if (uf.connected(p, q))
-							return true;
-					}
-				}
-			}
-		}
-		return false;
+		return uf.connected(initial, terminal);
 	}
-	
+
 	private void rangeCheck(int i, int j) throws IndexOutOfBoundsException {
 		if (!inBounds(i, j)) {
 			throw new IndexOutOfBoundsException("Coordinates out of range!");
@@ -84,7 +81,7 @@ public class Percolation {
 	private boolean inBounds(int i, int j) {
 		return (i >= 1 && i <= N && j >= 1 && j <= N);
 	}
-	
+
 
 
 }
