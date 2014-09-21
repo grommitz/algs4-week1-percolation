@@ -120,6 +120,10 @@ public class WeightedQuickUnionUF {
         }
         StdOut.println(uf.count() + " components");
     }
+    
+    public int[] getId() {
+		return id;
+	}
 
 }
 
