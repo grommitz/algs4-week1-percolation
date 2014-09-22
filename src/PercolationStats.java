@@ -1,10 +1,4 @@
-package week1;
-
 import static java.lang.Math.*;
-
-import stdlib.StdRandom;
-import stdlib.StdStats;
-import stdlib.Stopwatch;
 
 /**
  * 
@@ -13,8 +7,8 @@ import stdlib.Stopwatch;
  */
 public class PercolationStats {
 
-	private double[] results;
-	private int T;
+	private final double[] results;
+	private final int T;
 	
 	// perform T independent computational experiments on an N-by-N grid
 	public PercolationStats(int N, int T) {

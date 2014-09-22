@@ -1,8 +1,8 @@
-package week1;
-
-import algs4.QuickFindUF;
-import algs4.WeightedQuickUnionUF;
-
+/**
+ * 
+ * @author Martin Charlesworth
+ *
+ */
 public class Quiz1 {
 
 	void question1() {
@@ -13,7 +13,7 @@ public class Quiz1 {
 		uf.union(7, 8);
 		uf.union(3, 6);
 		uf.union(9, 0);
-		printId(1, uf.getId());
+		//printId(1, uf.id);
 	}
 	
 	void question2() {
@@ -27,7 +27,7 @@ public class Quiz1 {
 		uf.union(1, 7);
 		uf.union(0, 7);
 		uf.union(7, 4);
-		printId(2, uf.getId());
+		//printId(2, uf.id);
 	}
 	
 	private void printId(int question, int[] id) {
