@@ -34,13 +34,12 @@ public class Percolation {
 	}
 
 	public boolean isOpen(int i, int j) {      // is site (row i, column j) open?
-		rangeCheck(i, j);
-		return grid[indexOf(i, j)] == true;
+		return !isFull(i, j);
 	}
 
 	public boolean isFull(int i, int j) {     // is site (row i, column j) full?
 		rangeCheck(i, j);
-		return grid[indexOf(i, j)] == false;
+		return grid[indexOf(i, j)];
 	}
 
 	public boolean percolates() {              // does the system percolate?
@@ -74,10 +73,10 @@ public class Percolation {
 
 	private int[] neighboursOf(int i, int j) {
 		int[] n = new int[4];
-		n[0] = inBounds(i, j-1) ? indexOf(i,j-1) : -1;
-		n[1] = inBounds(i+1, j) ? indexOf(i+1,j) : -1;
-		n[2] = inBounds(i, j+1) ? indexOf(i,j+1) : -1;
-		n[3] = inBounds(i-1, j) ? indexOf(i-1,j) : -1;
+		n[0] = inBounds(i, j-1) ? indexOf(i, j-1) : -1;
+		n[1] = inBounds(i+1, j) ? indexOf(i+1, j) : -1;
+		n[2] = inBounds(i, j+1) ? indexOf(i, j+1) : -1;
+		n[3] = inBounds(i-1, j) ? indexOf(i-1, j) : -1;
 		return n;
 	}
 

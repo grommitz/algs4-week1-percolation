@@ -20,20 +20,20 @@ public class PercolationTest {
 	}
 
 	@Test
-	public void should_initialise_all_cells_to_full() {
+	public void should_initialise_all_cells_to_empty() {
 		for (int i = 1; i <= N; ++i) {
 			for (int j = 1; j <= N; ++j) {
 				assertThat(String.format("(%d,%d) should be empty!", i, j), 
-						perc.isFull(i, j), is(true));
+						perc.isFull(i, j), is(false));
 			}
 		}
 	}
 
 	@Test
-	public void open_should_make_full_false() {
-		assertThat(perc.isFull(1, 1), is(true));
+	public void open_should_make_full_true() {
+		assertThat(perc.isFull(1, 1), is(false));
 		perc.open(1, 1);
-		assertThat(perc.isFull(1, 1), is(false));	
+		assertThat(perc.isFull(1, 1), is(true));	
 	}
 	
 	@Test

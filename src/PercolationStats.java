@@ -10,7 +10,7 @@ public class PercolationStats {
 	private final double[] results;
 	private final int T;
 	private final int N;
-	
+
 	// perform T independent computational experiments on an N-by-N grid
 	public PercolationStats(int N, int T) {
 		if (N <= 0 || T <= 0) {
@@ -38,7 +38,7 @@ public class PercolationStats {
 	}
 
 	// returns upper bound of the 95% confidence interval
-	public double confidenceHi() {             
+	public double confidenceHi() {
 		return mean() + (1.96 * stddev() / sqrt(T));
 	}
 
@@ -48,11 +48,11 @@ public class PercolationStats {
 
 		while (!perc.percolates()) {
 			openASite(perc);
-			if (++openSites>6000) {
+			if (++openSites > 6000) {
 				perc.percolates();
 			}
 		}
-		return (double) openSites/(N*N);
+		return (double) openSites / (N * N);
 	}
 
 	private void openASite(Percolation perc) {
@@ -69,6 +69,7 @@ public class PercolationStats {
 
 	/**
 	 * test client
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -83,11 +84,13 @@ public class PercolationStats {
 		PercolationStats perc = new PercolationStats(N, T);
 		double secs = stopwatch.elapsedTime();
 		System.out.println(String.format("%-30s = %f", "mean", perc.mean()));
-		System.out.println(String.format("%-30s = %f", "stddev", perc.stddev()));
-		System.out.println(String.format("%-30s = %f %f", "95% confidence interval", perc.confidenceLo(), perc.confidenceHi()));
-		System.out.println(String.format("%-30s = %f", "running time (seconds)", secs));
+		System.out
+				.println(String.format("%-30s = %f", "stddev", perc.stddev()));
+		System.out.println(String.format("%-30s = %f %f",
+				"95% confidence interval", perc.confidenceLo(),
+				perc.confidenceHi()));
+		System.out.println(String.format("%-30s = %f",
+				"running time (seconds)", secs));
 	}
 
 }
-
-
