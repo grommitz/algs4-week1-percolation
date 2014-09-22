@@ -34,12 +34,14 @@ public class Percolation {
 	}
 
 	public boolean isOpen(int i, int j) {      // is site (row i, column j) open?
-		return !isFull(i, j);
-	}
-
-	public boolean isFull(int i, int j) {     // is site (row i, column j) full?
 		rangeCheck(i, j);
 		return grid[indexOf(i, j)];
+	}
+
+    // is site (row i, column j) full? NB "full" mean connected to the top! not !open as I thought.
+	public boolean isFull(int i, int j) {
+		int q = indexOf(i, j);
+		return uf.connected(initial, q);
 	}
 
 	public boolean percolates() {              // does the system percolate?
