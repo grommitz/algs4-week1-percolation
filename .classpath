@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="C:/Users/Martin/algs4/algs4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Martin/algs4/stdlib.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Martin/algs4/java/lib/jfxrt.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

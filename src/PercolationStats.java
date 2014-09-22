@@ -1,4 +1,4 @@
-import static java.lang.Math.*;
+import static java.lang.Math.sqrt;
 
 /**
  * 
@@ -9,16 +9,18 @@ public class PercolationStats {
 
 	private final double[] results;
 	private final int T;
+	private final int N;
 	
 	// perform T independent computational experiments on an N-by-N grid
 	public PercolationStats(int N, int T) {
-		if (N<=0 || T<=0) {
+		if (N <= 0 || T <= 0) {
 			throw new IllegalArgumentException("Bad N or T");
 		}
+		this.N = N;
 		this.T = T;
 		results = new double[T];
-		for (int t=0; t<T; ++t) {
-			results[t] = runSimulation(N);
+		for (int t = 0; t < T; ++t) {
+			results[t] = runSimulation();
 		}
 	}
 
@@ -40,9 +42,9 @@ public class PercolationStats {
 		return mean() + (1.96 * stddev() / sqrt(T));
 	}
 
-	private double runSimulation(int N) {
+	private double runSimulation() {
 		Percolation perc = new Percolation(N);
-		int openSites=0;
+		int openSites = 0;
 
 		while (!perc.percolates()) {
 			openASite(perc);
@@ -50,16 +52,16 @@ public class PercolationStats {
 				perc.percolates();
 			}
 		}
-		return (double)openSites/(N*N);
+		return (double) openSites/(N*N);
 	}
 
 	private void openASite(Percolation perc) {
 		boolean opened = false;
 		do {
-			int i = StdRandom.uniform(perc.N)+1;
-			int j = StdRandom.uniform(perc.N)+1;
+			int i = StdRandom.uniform(N) + 1;
+			int j = StdRandom.uniform(N) + 1;
 			if (!perc.isOpen(i, j)) {
-				perc.open(i,j);
+				perc.open(i, j);
 				opened = true;
 			}
 		} while (!opened);

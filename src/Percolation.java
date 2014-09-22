@@ -4,17 +4,17 @@
  *
  */
 public class Percolation {
-
+	
 	private final boolean[] grid;
 	private final WeightedQuickUnionUF uf;
-	final int N;
+	private final int N;
 	private final int initial;
 	private final int terminal;
 
 	// create N-by-N grid, with all sites blocked
 	public Percolation(int N) {
 		if (N <= 1) {
-			throw new IndexOutOfBoundsException("N must be > 1");
+			throw new IllegalArgumentException("N must be > 1");
 		}
 		this.N = N;
 		this.grid = new boolean[N*N];
@@ -25,21 +25,22 @@ public class Percolation {
 
 	// open site (row i, column j) if it is not already
 	public void open(int i, int j) {
-		rangeCheck(i,j);
-		int p = indexOf(i,j);
+		rangeCheck(i, j);
+		int p = indexOf(i, j);
 		if (grid[p] == false) {
 			grid[p] = true;
 		}
-		unionWithOpenNeighbours(i,j,p);
+		unionWithOpenNeighbours(i, j, p);
 	}
-	
+
 	public boolean isOpen(int i, int j) {      // is site (row i, column j) open?
-		rangeCheck(i,j);
-		return grid[indexOf(i,j)];
+		rangeCheck(i, j);
+		return grid[indexOf(i, j)] == true;
 	}
 
 	public boolean isFull(int i, int j) {     // is site (row i, column j) full?
-		return !isOpen(i, j);
+		rangeCheck(i, j);
+		return grid[indexOf(i, j)] == false;
 	}
 
 	public boolean percolates() {              // does the system percolate?
@@ -48,20 +49,20 @@ public class Percolation {
 
 	private void unionWithOpenNeighbours(int i, int j, int p) {
 		int[] neighbours = neighboursOf(i, j);
-		for (int k=0; k<neighbours.length; ++k) {
+		for (int k = 0; k < neighbours.length; ++k) {
 			int q = neighbours[k];
 			if (q != -1 && grid[q] == true) {
 				uf.union(p, q);
 			}
 		}
-		if (i==1) {
+		if (i == 1) {
 			uf.union(p, initial);
-		} else if (i==N) {
+		} else if (i == N) {
 			uf.union(p, terminal);
 		}
 	}
 
-	private void rangeCheck(int i, int j) throws IndexOutOfBoundsException {
+	private void rangeCheck(int i, int j) {
 		if (!inBounds(i, j)) {
 			throw new IndexOutOfBoundsException("Coordinates out of range!");
 		}
